@@ -1,4 +1,4 @@
-##importing mmodules
+#importing modules
 
 from tkinter import *
 import base64
@@ -6,7 +6,7 @@ import base64
 #initialize window
 root = Tk()
 root.geometry('1080x720')
-root.resizable(0,0)
+root.resizable(10,10)
 
 #title of the window
 root.title("Message Encoder & Decoder")
@@ -34,18 +34,31 @@ Result = StringVar()
 def Encode(key,message):
     enc=[]
     for i in range(len(message)):
+        print(i,"loop var \n")
         key_c = key[i % len(key)]
+        print(key_c,"key new val \n")
+        print(ord(message[i]),"converted message index\n")
+        print(ord(key_c),"converted key index\n")
+        print(chr((ord(message[i]) + ord(key_c)) % 256),"character generated\n")
         enc.append(chr((ord(message[i]) + ord(key_c)) % 256))
-        
-    return base64.urlsafe_b64encode("".join(enc).encode()).decode()
+        l=base64.urlsafe_b64encode("".join(enc).encode()).decode()
+        print(l,"encoded\n")
+    return l
 
 #function to decode
 
 def Decode(key,message):
     dec=[]
+    print(message,"message\n")
     message = base64.urlsafe_b64decode(message).decode()
+    print(message,"message decoded")
     for i in range(len(message)):
+        print("\n",i,"lop var\n")
         key_c = key[i % len(key)]
+        print(key_c,"converted key index\n")
+        print(ord(message[i]),"converted message\n")
+        print(ord(key_c),"converted key\n")
+        print(chr((256 + ord(message[i])- ord(key_c)) % 256),"character generated\n")
         dec.append(chr((256 + ord(message[i])- ord(key_c)) % 256))
         
     return "".join(dec)
